@@ -19,12 +19,10 @@ role :app, "#{ec2_server}"                   # This may be the same as your `Web
 role :db,  "#{ec2_server}", :primary => true # This is where Rails migrations will run
 
 # if you want to clean up old releases on each deploy uncomment this:
-before 'deploy:assets:precompile', 'deploy:symlink_shared'
+before 'deploy', 'deploy:symlink_shared'
 after 'deploy:symlink_shared', 'deploy:rake_tasks'
-after 'deploy:rake_tasks', 'deploy:symlink_shared'
-after 'deploy:symlink_shared', 'nginx:config'
+after 'deploy:rake_tasks', 'nginx:config'
 after 'nginx:config', 'nginx:reload'
-after 'deploy', 'deploy:symlink_shared'
 after 'nginx:reload', 'deploy:cleanup'
 
 namespace :deploy do
