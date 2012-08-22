@@ -1,3 +1,6 @@
+require 'bundler/capistrano'
+require 'rvm/capistrano'
+
 ssh_options[:username] = 'deployer'
 ssh_options[:forward_agent] = true
 
@@ -24,7 +27,7 @@ after 'deploy:symlink_shared', 'deploy:rake_tasks'
 after 'deploy:rake_tasks', 'nginx:config'
 after 'nginx:config', 'nginx:reload'
 after 'deploy', 'deploy:symlink_shared'
-after 'deploy', 'deploy:cleanup'
+#after 'deploy', 'deploy:cleanup'
 
 namespace :deploy do
   %w(start stop restart).each do |action|
