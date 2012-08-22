@@ -27,11 +27,11 @@ after 'deploy:config_files', 'deploy:rake_tasks'
 after 'deploy:rake_tasks', 'nginx:config'
 after 'nginx:config', 'nginx:reload'
 after 'deploy', 'deploy:config_files'
-#after 'deploy', 'deploy:cleanup'
+after 'deploy', 'deploy:cleanup'
 
 namespace :deploy do
   %w(start stop restart).each do |action|
-    #task(action) { run "cd #{current_path} && script/unicorn #{action}" }
+    task(action) { run "cd #{current_path} && script/unicorn #{action}" }
   end
 
   task :config_files, :except => { :no_release => true } do
