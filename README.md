@@ -1,0 +1,4 @@
+spree-edge
+==========
+
+Spree playground
