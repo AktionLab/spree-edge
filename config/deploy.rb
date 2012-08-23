@@ -23,11 +23,11 @@ role :db,  "#{ec2_server}", :primary => true # This is where Rails migrations wi
 
 # if you want to clean up old releases on each deploy uncomment this:
 #before 'deploy:assets:precompile', 'deploy:symlink_shared'
+before 'deploy:restart', 'deploy:config_files'
 after 'deploy:config_files', 'deploy:rake_tasks'
 after 'deploy:rake_tasks', 'nginx:config'
 after 'nginx:config', 'nginx:reload'
-after 'deploy', 'deploy:config_files'
-after 'deploy', 'deploy:cleanup'
+after 'nginx:reload', 'deploy:cleanup'
 
 namespace :deploy do
   %w(start stop restart).each do |action|
@@ -39,7 +39,7 @@ namespace :deploy do
   end
 
   task :rake_tasks do
-    run "cd #{release_path} && RAILS_ENV=production bundle exec rake db:migrate"
+    run "cd #{release_path} && RAILS_ENV=production bundle exec rake db:migrate assets:precompile"
   end
 end
 
